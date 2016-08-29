@@ -1,5 +1,20 @@
-<a href="/create">Adicionar cerveja</a>
-<br>
+<a href="/create" class="btn btn-default adicionar">
+    <span class="glyphicon glyphicon-plus"></span> Adicionar cerveja
+</a>
+<table class="table table-striped">
 <?php foreach ($beers as $beer): ?>
-    <?php echo $beer->name;?> <br>
+    <tr>
+        <td><?php echo $beer->name;?></td>
+        <td>
+            <a href="#" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span>
+            </a>
+        </td>
+        <td>
+            <a href="#" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+            </a>
+        </td>
+    </tr>
 <?php endforeach;?>
+</table>
