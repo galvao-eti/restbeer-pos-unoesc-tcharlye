@@ -19,40 +19,85 @@ class IndexController extends AbstractActionController
         $beers = $this->getServiceLocator()
                       ->get('Application\Model\BeerTableGateway')
                       ->fetchAll();
-        return new ViewModel(array('beers' => $beers));
+
+        return new ViewModel(['beers' => $beers]);
     }
 
     public function createAction()
     {
-        $form = $this->getServiceLocator()->get('Application\Form\Beer');
-        $form->setAttribute('action', '/insert');
-        $form->get('send')->setAttribute('value', 'Salvar');
+        $form = $this->getServiceLocator()
+                     ->get('Application\Form\Beer')
+                     ->setAttribute('action', '/insert');
 
         return new ViewModel(['beerForm' => $form]);
     }
 
     public function insertAction()
     {
-        $form = $this->getServiceLocator()->get('Application\Form\Beer');
-        $form->setAttribute('action', '/insert');
-        $tableGateway = $this->getServiceLocator()->get('Application\Model\BeerTableGateway');
-        $beer = new \Application\Model\Beer;
+        $form = $this->getServiceLocator()
+                     ->get('Application\Form\Beer')
+                     ->setAttribute('action', '/insert');
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($beer->getInputFilter());
-            $form->setData($request->getPost());
-            if ($form->isValid()) {
-                /* pega os dados validados e filtrados */
-                $data = $form->getData();
-                /* preenche os dados do objeto Post com os dados do formulário*/
-                $beer->exchangeArray($data);
-                /* salva o novo post*/
-                $tableGateway->save($beer);
-                /* redireciona para a página inicial que mostra todos os posts*/
-                return $this->redirect()->toUrl('/');
-            }
+            $this->save($form, $request->getPost());
         }
+        $view = new ViewModel(['beerForm' => $form]);
+        $view->setTemplate('application/index/create.phtml');
 
-        return new ViewModel(['beerForm' => $form]);
+        return $view;
+    }
+
+    public function updateAction()
+    {
+        $form = $this->getServiceLocator()
+                     ->get('Application\Form\Beer')
+                     ->setAttribute('action', '/update');
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = $request->getPost();
+            $this->save($form, $data);
+        }
+        if (empty($data->id)) {
+            $tableGateway = $this->getServiceLocator()->get('Application\Model\BeerTableGateway');
+            $data = (array) $tableGateway->get($this->params()->fromRoute('id'));
+        }
+        $form->setData($data);
+        $view = new ViewModel(['beerForm' => $form]);
+        $view->setTemplate('application/index/create.phtml');
+
+        return $view;
+    }
+
+    public function deleteAction()
+    {
+        $tableGateway = $this->getServiceLocator()->get('Application\Model\BeerTableGateway');
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = $request->getPost();
+            $tableGateway->delete($data->id);
+
+            return $this->redirect()->toUrl('/');
+        }
+        $beer = $tableGateway->get($this->params()->fromRoute('id'));
+
+        return new ViewModel(['beer' => $beer]);
+    }
+
+    private function save(\Application\Form\Beer $form, \Zend\Stdlib\Parameters $data)
+    {
+        $tableGateway = $this->getServiceLocator()->get('Application\Model\BeerTableGateway');
+        $beer = new \Application\Model\Beer;
+        $form->setInputFilter($beer->getInputFilter());
+        $form->setData($data);
+        if ($form->isValid()) {
+            /* pega os dados validados e filtrados */
+            $data = $form->getData();
+            /* preenche os dados do objeto Post com os dados do formulário*/
+            $beer->exchangeArray($data);
+            /* salva o novo post*/
+            $tableGateway->save($beer);
+            /* redireciona para a página inicial que mostra todos os posts*/
+            return $this->redirect()->toUrl('/');
+        }
     }
 }

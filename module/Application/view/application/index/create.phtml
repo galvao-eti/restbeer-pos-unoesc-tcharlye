@@ -1,4 +1,5 @@
 <?php echo $this->form()->openTag($beerForm); ?>
+
 <div class="form-group">
     <?php echo $this->formRow($beerForm->get('name')); ?>
 </div>
@@ -11,10 +12,12 @@
     <?php echo $this->formRow($beerForm->get('img')); ?>
 </div>
 
-<?php if ($beerForm->has('id')): ?>
-    <?php echo $this->formElement($beerForm->get('id')) ?>
-<?php endif;?>
+<?php echo $this->formElement($beerForm->get('id')); ?>
 
-<?php echo $this->formElement($beerForm->get('send')) ?>
+<div class="form-buttons">
+    <?php echo $this->formElement($beerForm->get('cancel')->setAttribute('onclick', "location.href='{$this->url('home')}'")); ?>
 
-<?php echo $this->form()->closeTag() ?>
+    <?php echo $this->formElement($beerForm->get('send')); ?>
+</div>
+
+<?php echo $this->form()->closeTag(); ?>

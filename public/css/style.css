@@ -46,6 +46,11 @@ a.adicionar {
     margin-bottom: 15px;
 }
 
+div.form-buttons {
+    margin-top: 20px;
+    text-align: right;
+}
+
 form label {
     width: 100%;
 }

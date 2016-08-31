@@ -1,0 +1,11 @@
+<div class="alert alert-warning">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <strong>Atenção!</strong> Você tem certeza que deseja remover a cerveja <?php echo $beer->name; ?>?
+    <form method="post">
+        <input type="hidden" name="id" value="<?php echo $beer->id; ?>">
+        <div class="form-buttons">
+            <a href="<?php echo $this->url('home'); ?>" class="btn btn-default">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Remover</button>
+        </div>
+    </form>
+</div>

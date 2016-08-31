@@ -44,11 +44,28 @@ class Beer extends Form
         ]);
 
         $this->add([
+            'name' => 'id',
+            'type'  => 'Hidden',
+        ]);
+
+        $this->add([
+            'name' => 'cancel',
+            'type'  => 'Button',
+            'options' => [
+                'label' => 'Cancelar',
+            ],
+            'attributes' => [
+                'value' => 'Cancelar',
+                'class' => 'btn btn-default',
+            ],
+        ]);
+
+        $this->add([
             'name' => 'send',
             'type'  => 'Submit',
             'attributes' => [
-                'value' => 'Submit',
-                'class' => 'btn btn-default',
+                'value' => 'Salvar',
+                'class' => 'btn btn-primary',
             ],
         ]);
 
