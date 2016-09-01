@@ -67,7 +67,7 @@ class Beer
 
         $inputFilter->add(array(
             'name'     => 'img',
-            'required' => false,
+            'required' => true,
             'filters'  => array(
                 array('name' => 'StripTags'),
                 array('name' => 'StringTrim'),

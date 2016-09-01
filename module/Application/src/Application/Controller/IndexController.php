@@ -27,7 +27,7 @@ class IndexController extends AbstractActionController
     {
         $form = $this->getServiceLocator()
                      ->get('Application\Form\Beer')
-                     ->setAttribute('action', '/insert');
+                     ->setAttribute('action', $this->url()->fromRoute('insert'));
 
         return new ViewModel(['beerForm' => $form]);
     }
@@ -36,7 +36,7 @@ class IndexController extends AbstractActionController
     {
         $form = $this->getServiceLocator()
                      ->get('Application\Form\Beer')
-                     ->setAttribute('action', '/insert');
+                     ->setAttribute('action', $this->url()->fromRoute('insert'));
         $request = $this->getRequest();
         if ($request->isPost()) {
             $this->save($form, $request->getPost());
@@ -51,7 +51,7 @@ class IndexController extends AbstractActionController
     {
         $form = $this->getServiceLocator()
                      ->get('Application\Form\Beer')
-                     ->setAttribute('action', '/update');
+                     ->setAttribute('action', $this->url()->fromRoute('update'));
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost();
@@ -76,7 +76,7 @@ class IndexController extends AbstractActionController
             $data = $request->getPost();
             $tableGateway->delete($data->id);
 
-            return $this->redirect()->toUrl('/');
+            return $this->redirect()->toRoute('home');
         }
         $beer = $tableGateway->get($this->params()->fromRoute('id'));
 
@@ -97,7 +97,7 @@ class IndexController extends AbstractActionController
             /* salva o novo post*/
             $tableGateway->save($beer);
             /* redireciona para a página inicial que mostra todos os posts*/
-            return $this->redirect()->toUrl('/');
+            return $this->redirect()->toRoute('home');
         }
     }
 }
